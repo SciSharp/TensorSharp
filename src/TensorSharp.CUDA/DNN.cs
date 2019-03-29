@@ -331,9 +331,9 @@ namespace TensorSharp.CUDA
                         wDesc, wPtr,
                         dyDesc, dyPtr,
                         convDesc,
-                        0,
                         (cudnnConvolutionBwdDataAlgo)algo,
                         workspacePtr,
+                        0,
                         dxDesc, dxPtr);
                 }
             }

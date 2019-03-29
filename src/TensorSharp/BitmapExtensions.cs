@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
+// using System.Drawing.Imaging; // this package only work in Windows.
 using System.Linq;
 using System.Text;
 
@@ -18,7 +18,7 @@ namespace TensorSharp
         /// <param name="bitmap"></param>
         /// <param name="allocator"></param>
         /// <returns></returns>
-        public static Tensor ToTensor(this Bitmap bitmap, IAllocator allocator)
+        /*public static Tensor ToTensor(this Bitmap bitmap, IAllocator allocator)
         {
             var cpuAllocator = new Cpu.CpuAllocator();
 
@@ -68,6 +68,6 @@ namespace TensorSharp
                 bitmap.UnlockBits(lockData);
             }
 
-        }
+        }*/
     }
 }

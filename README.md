@@ -10,15 +10,15 @@ TensorSharp is an open source library providing efficient N-dimensional arrays f
 
 ## Platform Support
  - Currently only Windows x64 is supported
- - Requires .NET Framework 4.0
- 
+ - Requires .NET Standard 2.0
+
 
 ## Building
 Prerequisites:
- 1. Visual Studio 2015 Community Edition (or another edition of Visual Studio 2015) must be installed
+ 1. Visual Studio 2017 Community Edition (or another edition of Visual Studio 2017) must be installed
  2. nuget.exe must exist on your PATH
  3. Powershell must be installed
- 
+
 Building:
  1. Run build_win_x64.bat in the root directory.
  2. *(optional)* CUDA kernels are built on demand with NVRTC and cached as .ptx files in the executable directory. To precompile the kernels so that no compilation is needed at runtime, run *precompile_cuda.bat* in the root directory. This will create a folder build/cuda_cache which contains the precompiled kernels.

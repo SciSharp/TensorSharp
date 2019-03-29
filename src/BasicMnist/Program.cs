@@ -22,7 +22,7 @@ namespace BasicMnist
         // Configuration options
 
         private const string MnistFolder = @"C:\MNIST\";
-        private const AccelMode AccMode = AccelMode.Cuda;
+        private const AccelMode AccMode = AccelMode.Cpu;
         private const ModelType MType = ModelType.MLPSoftmax;
         
         // Set these to non-null to restrict how many samples are loaded for each set

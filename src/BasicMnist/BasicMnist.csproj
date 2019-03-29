@@ -1,130 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AB4C16C4-3A7A-435D-B557-2C464690157F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BasicMnist</RootNamespace>
-    <AssemblyName>BasicMnist</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseCpuOnly|AnyCPU'">
-    <OutputPath>bin\ReleaseCpuOnly\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseCpuOnly|x64'">
-    <OutputPath>bin\x64\ReleaseCpuOnly\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\TensorSharp.CUDA\TensorSharp.CUDA.csproj" />
+    <ProjectReference Include="..\TensorSharp\TensorSharp.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="SimpleNN\ActivationLayers.cs" />
-    <Compile Include="SimpleNN\ClassNLLCriterion.cs" />
-    <Compile Include="SimpleNN\ConvLayers.cs" />
-    <Compile Include="SimpleNN\DropoutLayer.cs" />
-    <Compile Include="SimpleNN\ICriterion.cs" />
-    <Compile Include="SimpleNN\LayerBuilder.cs" />
-    <Compile Include="SimpleNN\Layer.cs" />
-    <Compile Include="MnistDataSetBuilder.cs" />
-    <Compile Include="MNISTParser.cs" />
-    <Compile Include="ModelBuilder.cs" />
-    <Compile Include="SimpleNN\LinearLayer.cs" />
-    <Compile Include="SimpleNN\LogSoftMax.cs" />
-    <Compile Include="SimpleNN\MaxPoolLayers.cs" />
-    <Compile Include="SimpleNN\Sequential.cs" />
-    <Compile Include="SimpleNN\MSECriterion.cs" />
-    <Compile Include="SimpleNN\Optim.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleNN\ViewLayer.cs" />
-    <Compile Include="SimpleTimer.cs" />
+    <Folder Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TensorSharp.CUDA\TensorSharp.CUDA.csproj">
-      <Project>{95890d35-0fe3-4a20-8260-e9829a636eb1}</Project>
-      <Name>TensorSharp.CUDA</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TensorSharp\TensorSharp.csproj">
-      <Project>{75332198-952c-48de-9f2b-21f49bc68ed2}</Project>
-      <Name>TensorSharp</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>xcopy $(ProjectDir)\..\CpuOps\bin\x64\Release\CpuOps.dll $(ProjectDir)\bin\x64\Release /d /y /I
-xcopy $(ProjectDir)\..\CpuOps\bin\x64\Debug\CpuOps.dll $(ProjectDir)\bin\x64\Debug /d /y /I
-xcopy $(SolutionDir)\..\lib\win_x64\*.dll $(ProjectDir)\bin\x64\Release /d /y /I
-xcopy $(SolutionDir)\..\lib\win_x64\*.dll $(ProjectDir)\bin\x64\Debug /d /y /I
-</PreBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
