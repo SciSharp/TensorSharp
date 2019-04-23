@@ -9,28 +9,28 @@ namespace BasicMnist.SimpleNN
 {
     public abstract class ActivationLayer : Layer
     {
-        protected readonly Tensor activation, gradInput;
+        protected readonly NDArray activation, gradInput;
 
         public ActivationLayer(IAllocator allocator, DType elementType, params long[] shape)
         {
-            this.activation = new Tensor(allocator, elementType, shape);
-            this.gradInput = new Tensor(allocator, elementType, shape);
+            this.activation = new NDArray(allocator, elementType, shape);
+            this.gradInput = new NDArray(allocator, elementType, shape);
         }
 
-        public override Tensor Output { get { return activation; } }
-        public override Tensor GradInput { get { return gradInput; } }
+        public override NDArray Output { get { return activation; } }
+        public override NDArray GradInput { get { return gradInput; } }
 
-        public override IEnumerable<Tensor> GetParameters()
+        public override IEnumerable<NDArray> GetParameters()
         {
-            return Enumerable.Empty<Tensor>();
+            return Enumerable.Empty<NDArray>();
         }
 
-        public override IEnumerable<Tensor> GetGradParameters()
+        public override IEnumerable<NDArray> GetGradParameters()
         {
-            return Enumerable.Empty<Tensor>();
+            return Enumerable.Empty<NDArray>();
         }
 
-        public override void FlattenParams(Tensor parameters, Tensor gradParameters)
+        public override void FlattenParams(NDArray parameters, NDArray gradParameters)
         {
             // no parameters in activation layers
         }
@@ -43,19 +43,19 @@ namespace BasicMnist.SimpleNN
         {
         }
 
-        public override Tensor Forward(Tensor input, ModelMode mode)
+        public override NDArray Forward(NDArray input, ModelMode mode)
         {
             Ops.Sigmoid(activation, input);
             return activation;
         }
 
-        public override Tensor Backward(Tensor input, Tensor gradOutput, ModelMode mode)
+        public override NDArray Backward(NDArray input, NDArray gradOutput, ModelMode mode)
         {
             UpdateGradInput(gradOutput, activation);
             return gradInput;
         }
 
-        private void UpdateGradInput(Tensor gradOutput, Tensor output)
+        private void UpdateGradInput(NDArray gradOutput, NDArray output)
         {
             // Computes  gradInput = gradOutput .* (1 - output) .* output
 
@@ -82,7 +82,7 @@ namespace BasicMnist.SimpleNN
             this.val = val;
         }
 
-        public override Tensor Forward(Tensor input, ModelMode mode)
+        public override NDArray Forward(NDArray input, ModelMode mode)
         {
             var keepElements = input.TVar() > threshold;
             (input.TVar().CMul(keepElements) + (1 - keepElements) * val)
@@ -91,13 +91,13 @@ namespace BasicMnist.SimpleNN
             return activation;
         }
 
-        public override Tensor Backward(Tensor input, Tensor gradOutput, ModelMode mode)
+        public override NDArray Backward(NDArray input, NDArray gradOutput, ModelMode mode)
         {
             UpdateGradInput(input, gradOutput);
             return gradInput;
         }
 
-        private void UpdateGradInput(Tensor input, Tensor gradOutput)
+        private void UpdateGradInput(NDArray input, NDArray gradOutput)
         {
             // Retains gradients only where input x > threshold
 

@@ -20,7 +20,7 @@ namespace TensorSharpTests
         private void RunSetGet(DType type)
         {
             var allocator = new CpuAllocator();
-            var a = new Tensor(allocator, DType.Float32, 1);
+            var a = new NDArray(allocator, DType.Float32, 1);
 
             var value = 123.0f;
             a.SetElementAsFloat(value, 0);
@@ -56,8 +56,8 @@ namespace TensorSharpTests
         private void RunCopy(Array srcData, DType destType)
         {
             var allocator = new CpuAllocator();
-            var a = Tensor.FromArray(allocator, srcData);
-            var b = new Tensor(allocator, destType, a.Sizes);
+            var a = NDArray.FromArray(allocator, srcData);
+            var b = new NDArray(allocator, destType, a.Shape);
 
             Ops.Copy(b, a);
 

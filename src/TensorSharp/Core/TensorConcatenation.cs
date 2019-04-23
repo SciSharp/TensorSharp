@@ -1,14 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿// ***********************************************************************
+// Assembly         : TensorSharp
+// Author           : Community
+// Created          : 12-09-2018
+//
+// Last Modified By : Deepak Battini
+// Last Modified On : 11-25-2018
+// ***********************************************************************
+// <copyright file="TensorConcatenation.cs" company="TensorSharp">
+//     Copyright (c) . All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
 namespace TensorSharp.Core
 {
+    using System;
+    using System.Linq;
+
+    /// <summary>
+    /// Class Tensor Concatenation.
+    /// </summary>
     public static class TensorConcatenation
     {
         // Requires an implementation of *copy* for the given tensor types
-        public static Tensor Concat(Tensor result, int dimension, params Tensor[] inputs)
+        /// <summary>
+        /// Concats the specified result.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <param name="dimension">The dimension.</param>
+        /// <param name="inputs">The inputs.</param>
+        /// <returns>Tensor.</returns>
+        /// <exception cref="ArgumentException">Concat: at least two tensors required - inputs</exception>
+        public static NDArray Concat(NDArray result, int dimension, params NDArray[] inputs)
         {
             if (inputs.Length < 2) throw new ArgumentException("Concat: at least two tensors required", "inputs");
 
@@ -36,12 +58,26 @@ namespace TensorSharp.Core
 
 
 
-        private static long GetDimSize(Tensor tensor, int dim)
+        /// <summary>
+        /// Gets the size of the dim.
+        /// </summary>
+        /// <param name="tensor">The tensor.</param>
+        /// <param name="dim">The dim.</param>
+        /// <returns>System.Int64.</returns>
+        private static long GetDimSize(NDArray tensor, int dim)
         {
-            return dim < tensor.DimensionCount ? tensor.Sizes[dim] : 1;
+            return dim < tensor.DimensionCount ? tensor.Shape[dim] : 1;
         }
 
-        private static long[] ConcatTensorSize(int ndim, int dimension, Tensor[] tensors)
+        /// <summary>
+        /// Concats the size of the tensor.
+        /// </summary>
+        /// <param name="ndim">The ndim.</param>
+        /// <param name="dimension">The dimension.</param>
+        /// <param name="tensors">The tensors.</param>
+        /// <returns>System.Int64[].</returns>
+        /// <exception cref="InvalidOperationException">Inconsistent tensor sizes</exception>
+        private static long[] ConcatTensorSize(int ndim, int dimension, NDArray[] tensors)
         {
             var result = new long[ndim];
             for (int i = 0; i < ndim; ++i)

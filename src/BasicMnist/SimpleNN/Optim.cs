@@ -8,11 +8,11 @@ namespace BasicMnist.SimpleNN
 {
     public struct OutputAndGrads
     {
-        public Tensor output;
-        public Tensor[] grads;
+        public NDArray output;
+        public NDArray[] grads;
     }
 
-    public delegate OutputAndGrads GradFunc(Tensor[] parameters);
+    public delegate OutputAndGrads GradFunc(NDArray[] parameters);
 
     public struct SgdConfig
     {
@@ -24,7 +24,7 @@ namespace BasicMnist.SimpleNN
     {
         private readonly SgdConfig config;
 
-        private Tensor[] gradAcc;
+        private NDArray[] gradAcc;
 
 
         public SgdOptimizer(SgdConfig config)
@@ -39,17 +39,17 @@ namespace BasicMnist.SimpleNN
 
         // Modifies parameters in place
         // returns model output
-        public Tensor Update(GradFunc grad, Tensor[] parameters)
+        public NDArray Update(GradFunc grad, NDArray[] parameters)
         {
             var outputAndGrads = grad(parameters);
-            Tensor output = outputAndGrads.output;
-            Tensor[] gradients = outputAndGrads.grads;
+            NDArray output = outputAndGrads.output;
+            NDArray[] gradients = outputAndGrads.grads;
             
                 if (gradAcc == null)
                 {
                     gradAcc = gradients.Select(x =>
                     {
-                        var result = new Tensor(x.Allocator, x.ElementType, x.Sizes);
+                        var result = new NDArray(x.Allocator, x.ElementType, x.Shape);
                         Ops.Fill(result, 0);
                         return result;
                     }).ToArray();

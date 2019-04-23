@@ -13,7 +13,7 @@ namespace BasicMnist.SimpleNN
         protected readonly ConvolutionDesc2d cd;
         protected readonly bool ceilMode;
 
-        protected readonly Tensor activation, indices, gradInput;
+        protected readonly NDArray activation, indices, gradInput;
 
 
 
@@ -26,29 +26,29 @@ namespace BasicMnist.SimpleNN
             var outputSizes = CpuMaxPoolingOps.OutputSize(inputSizes, ceilMode, cd);
             this.OutputSizes = outputSizes;
 
-            this.activation = new Tensor(allocator, elementType, outputSizes);
-            this.indices = new Tensor(allocator, elementType, outputSizes);
-            this.gradInput = new Tensor(allocator, elementType, inputSizes);
+            this.activation = new NDArray(allocator, elementType, outputSizes);
+            this.indices = new NDArray(allocator, elementType, outputSizes);
+            this.gradInput = new NDArray(allocator, elementType, inputSizes);
         }
 
-        public override Tensor Output { get { return activation; } }
-        public override Tensor GradInput { get { return gradInput; } }
+        public override NDArray Output { get { return activation; } }
+        public override NDArray GradInput { get { return gradInput; } }
 
 
         public long[] OutputSizes { get; private set; }
 
 
-        public override IEnumerable<Tensor> GetParameters()
+        public override IEnumerable<NDArray> GetParameters()
         {
-            return Enumerable.Empty<Tensor>();
+            return Enumerable.Empty<NDArray>();
         }
 
-        public override IEnumerable<Tensor> GetGradParameters()
+        public override IEnumerable<NDArray> GetGradParameters()
         {
-            return Enumerable.Empty<Tensor>();
+            return Enumerable.Empty<NDArray>();
         }
 
-        public override void FlattenParams(Tensor parameters, Tensor gradParameters)
+        public override void FlattenParams(NDArray parameters, NDArray gradParameters)
         {
             // no parameters
         }
@@ -65,13 +65,13 @@ namespace BasicMnist.SimpleNN
 
         }
 
-        public override Tensor Forward(Tensor input, ModelMode mode)
+        public override NDArray Forward(NDArray input, ModelMode mode)
         {
             CpuMaxPoolingOps.SpatialMaxPoolingForward(input, activation, indices, cd, ceilMode);
             return activation;
         }
 
-        public override Tensor Backward(Tensor input, Tensor gradOutput, ModelMode mode)
+        public override NDArray Backward(NDArray input, NDArray gradOutput, ModelMode mode)
         {
             CpuMaxPoolingOps.SpatialMaxPoolingBackward(input, gradOutput, gradInput, indices, cd, ceilMode);
             return gradInput;
@@ -88,13 +88,13 @@ namespace BasicMnist.SimpleNN
 
         }
 
-        public override Tensor Forward(Tensor input, ModelMode mode)
+        public override NDArray Forward(NDArray input, ModelMode mode)
         {
             maxPool.SpatialMaxPoolingForward(input, activation, indices, cd, ceilMode);
             return activation;
         }
 
-        public override Tensor Backward(Tensor input, Tensor gradOutput, ModelMode mode)
+        public override NDArray Backward(NDArray input, NDArray gradOutput, ModelMode mode)
         {
             maxPool.SpatialMaxPoolingBackward(input, gradOutput, gradInput, indices, cd, ceilMode);
             return gradInput;
@@ -111,13 +111,13 @@ namespace BasicMnist.SimpleNN
             this.poolingDesc = new DNNPoolingDesc(DNNPoolingMode.Max, cd.kH, cd.kW, cd.padH, cd.padW, cd.dH, cd.dW);
         }
 
-        public override Tensor Forward(Tensor input, ModelMode mode)
+        public override NDArray Forward(NDArray input, ModelMode mode)
         {
             DNN.PoolingForward(poolingDesc, input, activation);
             return activation;
         }
 
-        public override Tensor Backward(Tensor input, Tensor gradOutput, ModelMode mode)
+        public override NDArray Backward(NDArray input, NDArray gradOutput, ModelMode mode)
         {
             DNN.PoolingBackward(poolingDesc, input, activation, gradInput, gradOutput);
             return gradInput;

@@ -1,4 +1,17 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : TensorSharp
+// Author           : Community
+// Created          : 12-09-2018
+//
+// Last Modified By : Deepak Battini
+// Last Modified On : 11-25-2018
+// ***********************************************************************
+// <copyright file="IBasicOps.cs" company="TensorSharp">
+//     Copyright (c) . All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

@@ -10,14 +10,14 @@ namespace BasicMnist.SimpleNN
     {
         private readonly List<Layer> layers = new List<Layer>();
 
-        private Tensor lastOutput, lastGradInput;
+        private NDArray lastOutput, lastGradInput;
 
         public Sequential()
         {
         }
 
-        public override Tensor Output { get { return lastOutput; } }
-        public override Tensor GradInput { get { return lastGradInput; } }
+        public override NDArray Output { get { return lastOutput; } }
+        public override NDArray GradInput { get { return lastGradInput; } }
 
 
         public void Add(Layer layer)
@@ -25,29 +25,29 @@ namespace BasicMnist.SimpleNN
             this.layers.Add(layer);
         }
 
-        public override IEnumerable<Tensor> GetParameters()
+        public override IEnumerable<NDArray> GetParameters()
         {
             foreach (var layer in layers)
             {
-                foreach (var tensor in layer.GetParameters())
+                foreach (var p in layer.GetParameters())
                 {
-                    yield return tensor;
+                    yield return p;
                 }
             }
         }
 
-        public override IEnumerable<Tensor> GetGradParameters()
+        public override IEnumerable<NDArray> GetGradParameters()
         {
             foreach (var layer in layers)
             {
-                foreach (var tensor in layer.GetGradParameters())
+                foreach (var p in layer.GetGradParameters())
                 {
-                    yield return tensor;
+                    yield return p;
                 }
             }
         }
 
-        public override void FlattenParams(Tensor parameters, Tensor gradParameters)
+        public override void FlattenParams(NDArray parameters, NDArray gradParameters)
         {
             long offset = 0;
             for (int i = 0; i < layers.Count; i++)
@@ -64,9 +64,9 @@ namespace BasicMnist.SimpleNN
             }
         }
 
-        public override Tensor Forward(Tensor input, ModelMode mode)
+        public override NDArray Forward(NDArray input, ModelMode mode)
         {
-            Tensor curOutput = input;
+            NDArray curOutput = input;
             foreach (var layer in layers)
             {
                 curOutput = layer.Forward(curOutput, mode);
@@ -76,7 +76,7 @@ namespace BasicMnist.SimpleNN
             return curOutput;
         }
 
-        public override Tensor Backward(Tensor input, Tensor gradOutput, ModelMode mode)
+        public override NDArray Backward(NDArray input, NDArray gradOutput, ModelMode mode)
         {
             var curGradOutput = gradOutput;
 

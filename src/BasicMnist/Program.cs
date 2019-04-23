@@ -112,7 +112,7 @@ namespace BasicMnist
         {
             using (new SimpleTimer("Training epoch completed in {0}ms"))
             {
-                for (int batchStart = 0; batchStart <= trainingSet.inputs.Sizes[0] - BatchSize; batchStart += BatchSize)
+                for (int batchStart = 0; batchStart <= trainingSet.inputs.Shape[0] - BatchSize; batchStart += BatchSize)
                 {
                     Console.Write(".");
 
@@ -122,9 +122,9 @@ namespace BasicMnist
                         using (var mbTargets = trainingSet.targets.Narrow(0, batchStart, BatchSize))
                         using (var mbTargetClasses = trainingSet.targetValues.Narrow(0, batchStart, BatchSize))
                         {
-                            foreach (var gradTensor in model.GetGradParameters())
+                            foreach (var gradNDArray in model.GetGradParameters())
                             {
-                                Ops.Fill(gradTensor, 0);
+                                Ops.Fill(gradNDArray, 0);
                             }
 
                             var modelOutput = model.Forward(mbInputs, ModelMode.Train);
@@ -151,7 +151,7 @@ namespace BasicMnist
         private static void EvaluateModel(Sequential model, DataSet testingSet, int numInputs)
         {
             float totalCorrect = 0;
-            for (int batchStart = 0; batchStart <= testingSet.inputs.Sizes[0] - BatchSize; batchStart += BatchSize)
+            for (int batchStart = 0; batchStart <= testingSet.inputs.Shape[0] - BatchSize; batchStart += BatchSize)
             {
                 using (var mbInputs = testingSet.inputs.Narrow(0, batchStart, BatchSize))
                 using (var mbTargetValues = testingSet.targetValues.Narrow(0, batchStart, BatchSize))
@@ -165,7 +165,7 @@ namespace BasicMnist
                 }
             }
 
-            Console.WriteLine("Test set total correct: " + totalCorrect + " / " + testingSet.inputs.Sizes[0]);
+            Console.WriteLine("Test set total correct: " + totalCorrect + " / " + testingSet.inputs.Shape[0]);
         }
     }
 }

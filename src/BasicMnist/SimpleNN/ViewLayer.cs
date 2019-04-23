@@ -11,7 +11,7 @@ namespace BasicMnist.SimpleNN
         private readonly long[] resultSize;
 
         private long[] lastInputSize;
-        private Tensor activation, gradInput;
+        private NDArray activation, gradInput;
 
         public ViewLayer(params long[] resultSize)
         {
@@ -22,10 +22,10 @@ namespace BasicMnist.SimpleNN
         {
         }
 
-        public override Tensor GradInput { get { return gradInput; } }
-        public override Tensor Output { get { return activation; } }
+        public override NDArray GradInput { get { return gradInput; } }
+        public override NDArray Output { get { return activation; } }
 
-        public override Tensor Backward(Tensor input, Tensor gradOutput, ModelMode mode)
+        public override NDArray Backward(NDArray input, NDArray gradOutput, ModelMode mode)
         {
             if (gradInput != null)
                 gradInput.Dispose();
@@ -34,26 +34,26 @@ namespace BasicMnist.SimpleNN
             return gradInput;
         }
 
-        public override Tensor Forward(Tensor input, ModelMode mode)
+        public override NDArray Forward(NDArray input, ModelMode mode)
         {
             if (activation != null)
                 activation.Dispose();
             activation = input.View(resultSize);
-            lastInputSize = input.Sizes;
+            lastInputSize = input.Shape;
             return activation;
         }
 
-        public override IEnumerable<Tensor> GetGradParameters()
+        public override IEnumerable<NDArray> GetGradParameters()
         {
-            return Enumerable.Empty<Tensor>();
+            return Enumerable.Empty<NDArray>();
         }
 
-        public override IEnumerable<Tensor> GetParameters()
+        public override IEnumerable<NDArray> GetParameters()
         {
-            return Enumerable.Empty<Tensor>();
+            return Enumerable.Empty<NDArray>();
         }
 
-        public override void FlattenParams(Tensor parameters, Tensor gradParameters)
+        public override void FlattenParams(NDArray parameters, NDArray gradParameters)
         {
             // no parameters
         }

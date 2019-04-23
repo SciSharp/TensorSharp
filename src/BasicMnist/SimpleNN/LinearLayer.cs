@@ -9,8 +9,8 @@ namespace BasicMnist.SimpleNN
 {
     public class LinearLayer : Layer
     {
-        private Tensor weights, bias, activation, gradInput;
-        private Tensor gradWeights, gradBias;
+        private NDArray weights, bias, activation, gradInput;
+        private NDArray gradWeights, gradBias;
 
         private readonly int batchSize, nOutput;
 
@@ -19,34 +19,34 @@ namespace BasicMnist.SimpleNN
             this.batchSize = batchSize;
             this.nOutput = nOutput;
 
-            this.weights = new Tensor(allocator, elementType, nInput, nOutput);
-            this.bias = new Tensor(allocator, elementType, 1, nOutput);
+            this.weights = new NDArray(allocator, elementType, nInput, nOutput);
+            this.bias = new NDArray(allocator, elementType, 1, nOutput);
 
-            this.activation = new Tensor(allocator, elementType, batchSize, nOutput);
+            this.activation = new NDArray(allocator, elementType, batchSize, nOutput);
 
-            this.gradInput = new Tensor(allocator, elementType, batchSize, nInput);
-            this.gradWeights = new Tensor(allocator, elementType, nInput, nOutput);
-            this.gradBias = new Tensor(allocator, elementType, 1, nOutput);
+            this.gradInput = new NDArray(allocator, elementType, batchSize, nInput);
+            this.gradWeights = new NDArray(allocator, elementType, nInput, nOutput);
+            this.gradBias = new NDArray(allocator, elementType, 1, nOutput);
 
             InitWeightsLinear(seedSource, weights, bias);
         }
 
-        public override Tensor Output { get { return activation; } }
-        public override Tensor GradInput { get { return gradInput; } }
+        public override NDArray Output { get { return activation; } }
+        public override NDArray GradInput { get { return gradInput; } }
 
-        public override IEnumerable<Tensor> GetParameters()
+        public override IEnumerable<NDArray> GetParameters()
         {
             yield return weights;
             yield return bias;
         }
 
-        public override IEnumerable<Tensor> GetGradParameters()
+        public override IEnumerable<NDArray> GetGradParameters()
         {
             yield return gradWeights;
             yield return gradBias;
         }
 
-        public override void FlattenParams(Tensor parameters, Tensor gradParameters)
+        public override void FlattenParams(NDArray parameters, NDArray gradParameters)
         {
             var weightSize = weights.ElementCount();
             var biasSize = bias.ElementCount();
@@ -64,7 +64,7 @@ namespace BasicMnist.SimpleNN
                 .Evaluate(gradParameters.TVar().Narrow(0, weightSize, biasSize));
         }
 
-        public override Tensor Forward(Tensor input, ModelMode mode)
+        public override NDArray Forward(NDArray input, ModelMode mode)
         {
             // activation = [bias] + input * weights
             // where [bias] means broadcast the bias vector
@@ -75,14 +75,14 @@ namespace BasicMnist.SimpleNN
             return activation;
         }
 
-        public override Tensor Backward(Tensor input, Tensor gradOutput, ModelMode mode)
+        public override NDArray Backward(NDArray input, NDArray gradOutput, ModelMode mode)
         {
             UpdateGradInput(gradOutput);
             AccWeightGrads(input, gradOutput);
             return gradInput;
         }
 
-        private void AccWeightGrads(Tensor input, Tensor gradOutput)
+        private void AccWeightGrads(NDArray input, NDArray gradOutput)
         {
             gradWeights.TVar().Addmm(1, 1, input.TVar().Transpose(), gradOutput)
                 .Evaluate(gradWeights);
@@ -91,15 +91,15 @@ namespace BasicMnist.SimpleNN
                 .Evaluate(gradBias);
         }
 
-        private void UpdateGradInput(Tensor gradOutput)
+        private void UpdateGradInput(NDArray gradOutput)
         {
             gradOutput.TVar().Dot(weights.TVar().Transpose())
                 .Evaluate(gradInput);
         }
 
-        private void InitWeightsLinear(SeedSource seedSource, Tensor weights, Tensor bias)
+        private void InitWeightsLinear(SeedSource seedSource, NDArray weights, NDArray bias)
         {
-            var stdv = 1.0f / (float)Math.Sqrt(weights.Sizes[1]);
+            var stdv = 1.0f / (float)Math.Sqrt(weights.Shape[1]);
             Ops.RandomUniform(weights, seedSource, -stdv, stdv);
             Ops.RandomUniform(bias, seedSource, -stdv, stdv);
         }

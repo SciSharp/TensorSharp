@@ -13,7 +13,7 @@ namespace BasicMnist.SimpleNN
         private readonly IAllocator allocator;
         private readonly DType elementType;
 
-        private readonly Tensor activation, gradInput, noise;
+        private readonly NDArray activation, gradInput, noise;
         private readonly float pRemove;
 
 
@@ -25,30 +25,30 @@ namespace BasicMnist.SimpleNN
 
             this.pRemove = pRemove;
 
-            this.activation = new Tensor(allocator, elementType, shape);
-            this.gradInput = new Tensor(allocator, elementType, shape);
-            this.noise = new Tensor(allocator, elementType, shape);
+            this.activation = new NDArray(allocator, elementType, shape);
+            this.gradInput = new NDArray(allocator, elementType, shape);
+            this.noise = new NDArray(allocator, elementType, shape);
         }
 
-        public override Tensor Output { get { return activation; } }
-        public override Tensor GradInput { get { return gradInput; } }
+        public override NDArray Output { get { return activation; } }
+        public override NDArray GradInput { get { return gradInput; } }
 
-        public override IEnumerable<Tensor> GetParameters()
+        public override IEnumerable<NDArray> GetParameters()
         {
-            return Enumerable.Empty<Tensor>();
+            return Enumerable.Empty<NDArray>();
         }
 
-        public override IEnumerable<Tensor> GetGradParameters()
+        public override IEnumerable<NDArray> GetGradParameters()
         {
-            return Enumerable.Empty<Tensor>();
+            return Enumerable.Empty<NDArray>();
         }
 
-        public override void FlattenParams(Tensor parameters, Tensor gradParameters)
+        public override void FlattenParams(NDArray parameters, NDArray gradParameters)
         {
             // no parameters
         }
 
-        public override Tensor Forward(Tensor input, ModelMode mode)
+        public override NDArray Forward(NDArray input, ModelMode mode)
         {
             Ops.Copy(activation, input);
 
@@ -56,7 +56,7 @@ namespace BasicMnist.SimpleNN
             {
                 var p = 1 - pRemove;
 
-                TVar.RandomBernoulli(seedSource, p, allocator, elementType, noise.Sizes)
+                Variable.RandomBernoulli(seedSource, p, allocator, elementType, noise.Shape)
                     .Div(p)
                     .Evaluate(noise);
 
@@ -68,13 +68,13 @@ namespace BasicMnist.SimpleNN
             return activation;
         }
 
-        public override Tensor Backward(Tensor input, Tensor gradOutput, ModelMode mode)
+        public override NDArray Backward(NDArray input, NDArray gradOutput, ModelMode mode)
         {   
             UpdateGradInput(gradOutput, activation, mode == ModelMode.Train);
             return gradInput;
         }
 
-        private void UpdateGradInput(Tensor gradOutput, Tensor output, bool train)
+        private void UpdateGradInput(NDArray gradOutput, NDArray output, bool train)
         {
             Ops.Copy(gradInput, gradOutput);
 

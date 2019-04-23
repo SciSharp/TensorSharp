@@ -1,0 +1,9 @@
+C:\git\SiaNet\Library\ManagedCuda\bin\Debug\netstandard2.0\SiaNet.ManagedCuda.deps.json
+C:\git\SiaNet\Library\ManagedCuda\bin\Debug\netstandard2.0\SiaNet.ManagedCuda.dll
+C:\git\SiaNet\Library\ManagedCuda\bin\Debug\netstandard2.0\SiaNet.ManagedCuda.pdb
+C:\git\SiaNet\Library\ManagedCuda\obj\Debug\netstandard2.0\SiaNet.ManagedCuda.csprojAssemblyReference.cache
+C:\git\SiaNet\Library\ManagedCuda\obj\Debug\netstandard2.0\SiaNet.ManagedCuda.csproj.CoreCompileInputs.cache
+C:\git\SiaNet\Library\ManagedCuda\obj\Debug\netstandard2.0\SiaNet.ManagedCuda.AssemblyInfoInputs.cache
+C:\git\SiaNet\Library\ManagedCuda\obj\Debug\netstandard2.0\SiaNet.ManagedCuda.AssemblyInfo.cs
+C:\git\SiaNet\Library\ManagedCuda\obj\Debug\netstandard2.0\SiaNet.ManagedCuda.dll
+C:\git\SiaNet\Library\ManagedCuda\obj\Debug\netstandard2.0\SiaNet.ManagedCuda.pdb

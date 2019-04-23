@@ -10,40 +10,40 @@ namespace BasicMnist.SimpleNN
     public class ClassNLLCriterion : ICriterion
     {
         private readonly IAllocator allocator;
-        private Tensor output;
-        private Tensor gradInput;
+        private NDArray output;
+        private NDArray gradInput;
 
 
         public ClassNLLCriterion(IAllocator allocator, int batchSize, int nClasses)
         {
             this.allocator = allocator;
 
-            this.output = new Tensor(allocator, DType.Float32, 1);
-            this.gradInput = new Tensor(allocator, DType.Float32, batchSize, nClasses);
+            this.output = new NDArray(allocator, DType.Float32, 1);
+            this.gradInput = new NDArray(allocator, DType.Float32, batchSize, nClasses);
         }
 
-        public Tensor UpdateOutput(Tensor input, Tensor target)
+        public NDArray UpdateOutput(NDArray input, NDArray target)
         {
-            var indices = target.TVar().View(target.Sizes[0], 1);
+            var indices = target.TVar().View(target.Shape[0], 1);
 
             var loss = input.TVar()
                 .Gather(1, indices)
                 .SumAll()
-                 * (-1.0f / target.Sizes[0]);
+                 * (-1.0f / target.Shape[0]);
 
             loss.Evaluate(output);
 
             return output;
         }
 
-        public Tensor UpdateGradInput(Tensor input, Tensor target)
+        public NDArray UpdateGradInput(NDArray input, NDArray target)
         {
-            var norm = -1.0f / input.Sizes[0];
+            var norm = -1.0f / input.Shape[0];
 
-            TVar.Fill(0, allocator, DType.Float32, gradInput.Sizes)
+            Variable.Fill(0, allocator, DType.Float32, gradInput.Shape)
                 .Evaluate(gradInput);
             
-            var indices = target.TVar().View(target.Sizes[0], 1);
+            var indices = target.TVar().View(target.Shape[0], 1);
             
             gradInput.TVar()
                 .ScatterFill(norm, 1, indices)
