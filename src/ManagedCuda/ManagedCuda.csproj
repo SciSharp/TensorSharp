@@ -5,7 +5,7 @@
     <Platforms>AnyCPU;x64;x86</Platforms>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ManagedCUDAKey.snk</AssemblyOriginatorKeyFile>
-    <AssemblyName>SiaNet.ManagedCuda</AssemblyName>
+    <AssemblyName>ManagedCuda</AssemblyName>
     <RootNamespace>SiaNet.ManagedCuda</RootNamespace>
     <Version>0.4.1.1</Version>
     <Authors>Deepak Battini</Authors>
