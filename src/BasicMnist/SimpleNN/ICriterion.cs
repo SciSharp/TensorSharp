@@ -8,7 +8,7 @@ namespace BasicMnist.SimpleNN
 {
     public interface ICriterion
     {
-        Tensor UpdateOutput(Tensor input, Tensor target);
-        Tensor UpdateGradInput(Tensor input, Tensor target);
+        NDArray UpdateOutput(NDArray input, NDArray target);
+        NDArray UpdateGradInput(NDArray input, NDArray target);
     }
 }

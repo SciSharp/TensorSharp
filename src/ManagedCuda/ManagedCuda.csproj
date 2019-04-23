@@ -1,0 +1,131 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>ManagedCUDAKey.snk</AssemblyOriginatorKeyFile>
+    <AssemblyName>ManagedCuda</AssemblyName>
+    <RootNamespace>SiaNet.ManagedCuda</RootNamespace>
+    <Version>0.4.1.1</Version>
+    <Authors>Deepak Battini</Authors>
+    <Description>Dependency package for TensorSharp Backend</Description>
+    <PackageLicenseUrl>https://github.com/deepakkumar1984/SiaNet/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/deepakkumar1984/SiaNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/deepakkumar1984/SiaNet</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Configurations>Debug;Release;Azure</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;WIN,CUDA90,CUDNN7</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;WIN,CUDA90,CUDNN7</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;WIN,CUDA90,CUDNN5</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DefineConstants>TRACE;WIN,CUDA90,CUDNN7</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Azure|x64'">
+    <DefineConstants>TRACE;WIN,CUDA90,CUDNN7</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;WIN,CUDA100,NULL</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Azure|AnyCPU'">
+    <DefineConstants>TRACE;WIN,CUDA100,NULL</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>TRACE;WIN,CUDA100,CUDNN7</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Azure|x86'">
+    <DefineConstants>TRACE;WIN,CUDA100,CUDNN7</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="CudaManagedMemoryFixedTypes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CudaManagedMemoryFixedTypes.cs</LastGenOutput>
+    </None>
+    <None Update="CudaPageLockedHostMemory2DFixedTypes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CudaPageLockedHostMemory2DFixedTypes.cs</LastGenOutput>
+    </None>
+    <None Update="CudaPageLockedHostMemory3DFixedTypes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CudaPageLockedHostMemory3DFixedTypes.cs</LastGenOutput>
+    </None>
+    <None Update="CudaPageLockedHostMemoryFixedTypes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CudaPageLockedHostMemoryFixedTypes.cs</LastGenOutput>
+    </None>
+    <None Update="CudaRegisteredHostMemoryFixedTypes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CudaRegisteredHostMemoryFixedTypes.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="CudaManagedMemoryFixedTypes.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CudaManagedMemoryFixedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Update="CudaPageLockedHostMemory2DFixedTypes.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CudaPageLockedHostMemory2DFixedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Update="CudaPageLockedHostMemory3DFixedTypes.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CudaPageLockedHostMemory3DFixedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Update="CudaPageLockedHostMemoryFixedTypes.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CudaPageLockedHostMemoryFixedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Update="CudaRegisteredHostMemoryFixedTypes.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CudaRegisteredHostMemoryFixedTypes.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+    <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>

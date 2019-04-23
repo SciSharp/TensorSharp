@@ -15,21 +15,21 @@ namespace BasicMnist.SimpleNN
 
     public abstract class Layer
     {
-        public abstract IEnumerable<Tensor> GetParameters();
-        public abstract IEnumerable<Tensor> GetGradParameters();
+        public abstract IEnumerable<NDArray> GetParameters();
+        public abstract IEnumerable<NDArray> GetGradParameters();
 
         public long GetParameterCount()
         {
             return GetParameters().Aggregate(0L, (acc, item) => acc + item.ElementCount());
         }
 
-        public abstract void FlattenParams(Tensor parameters, Tensor gradParameters);
+        public abstract void FlattenParams(NDArray parameters, NDArray gradParameters);
 
 
-        public abstract Tensor Forward(Tensor input, ModelMode mode);
-        public abstract Tensor Backward(Tensor input, Tensor gradOutput, ModelMode mode);
+        public abstract NDArray Forward(NDArray input, ModelMode mode);
+        public abstract NDArray Backward(NDArray input, NDArray gradOutput, ModelMode mode);
 
-        public abstract Tensor Output { get; }
-        public abstract Tensor GradInput { get; }
+        public abstract NDArray Output { get; }
+        public abstract NDArray GradInput { get; }
     }
 }

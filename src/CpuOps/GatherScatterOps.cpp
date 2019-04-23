@@ -84,4 +84,3 @@ int TS_ScatterFill(TensorRef* result, float value, int dim, TensorRef* indices)
 		SWITCH_TENSOR_TYPE_ALL_CPU(result->elementType, ScatterFill_Apply, result, value, dim, indices)
 		API_END()
 }
-

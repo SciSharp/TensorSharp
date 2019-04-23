@@ -1,4 +1,17 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : TensorSharp
+// Author           : Community
+// Created          : 12-09-2018
+//
+// Last Modified By : Deepak Battini
+// Last Modified On : 11-25-2018
+// ***********************************************************************
+// <copyright file="RefCounted.cs" company="TensorSharp">
+//     Copyright (c) . All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +25,9 @@ namespace TensorSharp
     /// </summary>
     public abstract class RefCounted
     {
+        /// <summary>
+        /// The reference count
+        /// </summary>
         private int refCount = 1;
 
         /// <summary>
@@ -21,13 +37,21 @@ namespace TensorSharp
         {
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="RefCounted"/> class.
+        /// </summary>
         ~RefCounted()
         {
-            if (refCount > 0)
+            try
             {
-                Destroy();
-                refCount = 0;
+                if (refCount > 0)
+                {
+                    Destroy();
+                    refCount = 1;
+                }
             }
+            catch
+            { }
         }
 
         /// <summary>
@@ -47,6 +71,7 @@ namespace TensorSharp
         /// <summary>
         /// Throws an exception if the object has been destroyed, otherwise does nothing.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Reference counted object has been destroyed</exception>
         protected void ThrowIfDestroyed()
         {
             if (IsDestroyed())
@@ -55,6 +80,10 @@ namespace TensorSharp
             }
         }
 
+        /// <summary>
+        /// Gets the current reference count.
+        /// </summary>
+        /// <returns>System.Int32.</returns>
         protected int GetCurrentRefCount()
         {
             return refCount;
@@ -63,6 +92,7 @@ namespace TensorSharp
         /// <summary>
         /// Increments the reference count. If the object has previously been destroyed, an exception is thrown.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Cannot AddRef - object has already been destroyed</exception>
         public void AddRef()
         {
             int curRefCount;
@@ -83,6 +113,7 @@ namespace TensorSharp
         /// Decrements the reference count. If the reference count reaches zero, the object is destroyed.
         /// If the object has previously been destroyed, an exception is thrown.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Cannot release object - object has already been destroyed</exception>
         public void Release()
         {
             int original;

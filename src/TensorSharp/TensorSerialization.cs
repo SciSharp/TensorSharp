@@ -1,4 +1,17 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : TensorSharp
+// Author           : Community
+// Created          : 12-09-2018
+//
+// Last Modified By : Deepak Battini
+// Last Modified On : 11-25-2018
+// ***********************************************************************
+// <copyright file="TensorSerialization.cs" company="TensorSharp">
+//     Copyright (c) . All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,9 +20,17 @@ using System.Text;
 
 namespace TensorSharp
 {
+    /// <summary>
+    /// Class TensorSerialization.
+    /// </summary>
     public static class TensorSerialization
     {
-        public static void Serialize(Tensor tensor, Stream stream)
+        /// <summary>
+        /// Serializes the specified tensor.
+        /// </summary>
+        /// <param name="tensor">The tensor.</param>
+        /// <param name="stream">The stream.</param>
+        public static void Serialize(NDArray tensor, Stream stream)
         {
             using (var src = Ops.AsContiguous(tensor))
             {
@@ -21,7 +42,7 @@ namespace TensorSharp
                 writer.Write((int)tensor.ElementType);
                 for (int i = 0; i < tensor.DimensionCount; ++i)
                 {
-                    writer.Write(tensor.Sizes[i]);
+                    writer.Write(tensor.Shape[i]);
                 }
 
                 var byteCount = src.ElementType.Size() * tensor.ElementCount();
@@ -32,7 +53,13 @@ namespace TensorSharp
             }
         }
 
-        public static Tensor Deserialize(IAllocator allocator, Stream stream)
+        /// <summary>
+        /// Deserializes the specified allocator.
+        /// </summary>
+        /// <param name="allocator">The allocator.</param>
+        /// <param name="stream">The stream.</param>
+        /// <returns>Tensor.</returns>
+        public static NDArray Deserialize(IAllocator allocator, Stream stream)
         {
             // Note: don't dispose reader - it does not own the stream's lifetime
             var reader = new BinaryReader(stream);
@@ -46,13 +73,20 @@ namespace TensorSharp
             }
 
             var byteCount = reader.ReadInt64();
-            var result = new Tensor(allocator, elementType, sizes);
+            var result = new NDArray(allocator, elementType, sizes);
 
             ReadBytes(reader, result.Storage, result.StorageOffset, byteCount);
 
             return result;
         }
 
+        /// <summary>
+        /// Writes the bytes.
+        /// </summary>
+        /// <param name="writer">The writer.</param>
+        /// <param name="storage">The storage.</param>
+        /// <param name="startIndex">The start index.</param>
+        /// <param name="byteCount">The byte count.</param>
         private static void WriteBytes(BinaryWriter writer, Storage storage, long startIndex, long byteCount)
         {
             var buffer = new byte[4096];
@@ -75,6 +109,13 @@ namespace TensorSharp
             }
         }
 
+        /// <summary>
+        /// Reads the bytes.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <param name="storage">The storage.</param>
+        /// <param name="startIndex">The start index.</param>
+        /// <param name="byteCount">The byte count.</param>
         private static void ReadBytes(BinaryReader reader, Storage storage, long startIndex, long byteCount)
         {
             var buffer = new byte[4096];

@@ -1,19 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// ***********************************************************************
+// Assembly         : TensorSharp
+// Author           : Community
+// Created          : 12-09-2018
+//
+// Last Modified By : Deepak Battini
+// Last Modified On : 11-25-2018
+// ***********************************************************************
+// <copyright file="TensorResultBuilder.cs" company="TensorSharp">
+//     Copyright (c) . All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
 
 namespace TensorSharp.Core
 {
+    using System;
+
+    /// <summary>
+    /// Class TensorResultBuilder.
+    /// </summary>
     public static class TensorResultBuilder
     {
         // If a maybeResult is null, a new tensor will be constructed using the device id and element type of newTemplate
-        public static Tensor GetWriteTarget(Tensor maybeResult, Tensor newTemplate, bool requireContiguous, params long[] requiredSizes)
+        /// <summary>
+        /// Gets the write target.
+        /// </summary>
+        /// <param name="maybeResult">The maybe result.</param>
+        /// <param name="newTemplate">The new template.</param>
+        /// <param name="requireContiguous">if set to <c>true</c> [require contiguous].</param>
+        /// <param name="requiredSizes">The required sizes.</param>
+        /// <returns>Tensor.</returns>
+        public static NDArray GetWriteTarget(NDArray maybeResult, NDArray newTemplate, bool requireContiguous, params long[] requiredSizes)
         {
             return GetWriteTarget(maybeResult, newTemplate.Allocator, newTemplate.ElementType, requireContiguous, requiredSizes);
         }
 
-        public static Tensor GetWriteTarget(Tensor maybeResult, IAllocator allocatorForNew, DType elementTypeForNew, bool requireContiguous, params long[] requiredSizes)
+        /// <summary>
+        /// Gets the write target.
+        /// </summary>
+        /// <param name="maybeResult">The maybe result.</param>
+        /// <param name="allocatorForNew">The allocator for new.</param>
+        /// <param name="elementTypeForNew">The element type for new.</param>
+        /// <param name="requireContiguous">if set to <c>true</c> [require contiguous].</param>
+        /// <param name="requiredSizes">The required sizes.</param>
+        /// <returns>Tensor.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static NDArray GetWriteTarget(NDArray maybeResult, IAllocator allocatorForNew, DType elementTypeForNew, bool requireContiguous, params long[] requiredSizes)
         {
             if (maybeResult != null)
             {
@@ -29,20 +61,34 @@ namespace TensorSharp.Core
             }
             else
             {
-                return new Tensor(allocatorForNew, elementTypeForNew, requiredSizes);
+                return new NDArray(allocatorForNew, elementTypeForNew, requiredSizes);
             }
         }
 
-        private static bool MatchesRequirements(Tensor tensor, bool requireContiguous, params long[] requiredSizes)
+        /// <summary>
+        /// Matcheses the requirements.
+        /// </summary>
+        /// <param name="tensor">The tensor.</param>
+        /// <param name="requireContiguous">if set to <c>true</c> [require contiguous].</param>
+        /// <param name="requiredSizes">The required sizes.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        private static bool MatchesRequirements(NDArray tensor, bool requireContiguous, params long[] requiredSizes)
         {
             if (requireContiguous && !tensor.IsContiguous())
             {
                 return false;
             }
 
-            return ArrayEqual(tensor.Sizes, requiredSizes);
+            return ArrayEqual(tensor.Shape, requiredSizes);
         }
 
+        /// <summary>
+        /// Arrays the equal.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a">a.</param>
+        /// <param name="b">The b.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool ArrayEqual<T>(T[] a, T[] b)
         {
             if (a.Length != b.Length)
@@ -57,6 +103,14 @@ namespace TensorSharp.Core
             return true;
         }
 
+        /// <summary>
+        /// Arrays the equal except.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a">a.</param>
+        /// <param name="b">The b.</param>
+        /// <param name="ignoreIndex">Index of the ignore.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool ArrayEqualExcept<T>(T[] a, T[] b, int ignoreIndex)
         {
             if (a.Length != b.Length)

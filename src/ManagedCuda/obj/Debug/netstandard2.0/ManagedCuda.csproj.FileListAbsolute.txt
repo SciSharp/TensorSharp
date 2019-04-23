@@ -1,0 +1,9 @@
+C:\git\TensorSharp\src\ManagedCuda\obj\Debug\netstandard2.0\ManagedCuda.csproj.CoreCompileInputs.cache
+C:\git\TensorSharp\src\ManagedCuda\obj\Debug\netstandard2.0\ManagedCuda.AssemblyInfoInputs.cache
+C:\git\TensorSharp\src\ManagedCuda\obj\Debug\netstandard2.0\ManagedCuda.AssemblyInfo.cs
+C:\git\TensorSharp\src\ManagedCuda\bin\Debug\netstandard2.0\ManagedCuda.deps.json
+C:\git\TensorSharp\src\ManagedCuda\bin\Debug\netstandard2.0\ManagedCuda.dll
+C:\git\TensorSharp\src\ManagedCuda\bin\Debug\netstandard2.0\ManagedCuda.pdb
+C:\git\TensorSharp\src\ManagedCuda\obj\Debug\netstandard2.0\ManagedCuda.csprojAssemblyReference.cache
+C:\git\TensorSharp\src\ManagedCuda\obj\Debug\netstandard2.0\ManagedCuda.dll
+C:\git\TensorSharp\src\ManagedCuda\obj\Debug\netstandard2.0\ManagedCuda.pdb

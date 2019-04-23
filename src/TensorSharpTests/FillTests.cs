@@ -15,7 +15,7 @@ namespace TensorSharpTests
         public void FillByte()
         {
             var allocator = new CpuAllocator();
-            var a = new Tensor(allocator, DType.UInt8, 1);
+            var a = new NDArray(allocator, DType.UInt8, 1);
 
             var value = 97f;
             Ops.Fill(a, value);

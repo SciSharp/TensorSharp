@@ -9,17 +9,17 @@ namespace BasicMnist.SimpleNN
 {
     public class MSECriterion : ICriterion
     {
-        private Tensor output;
-        private Tensor gradInput;
+        private NDArray output;
+        private NDArray gradInput;
 
 
         public MSECriterion(IAllocator allocator, int batchSize, int outputSize)
         {
-            this.output = new Tensor(allocator, DType.Float32, 1);
-            this.gradInput = new Tensor(allocator, DType.Float32, batchSize, outputSize);
+            this.output = new NDArray(allocator, DType.Float32, 1);
+            this.gradInput = new NDArray(allocator, DType.Float32, batchSize, outputSize);
         }
 
-        public Tensor UpdateOutput(Tensor input, Tensor target)
+        public NDArray UpdateOutput(NDArray input, NDArray target)
         {
             (input.TVar() - target)
                 .Pow(2)
@@ -29,7 +29,7 @@ namespace BasicMnist.SimpleNN
             return output;
         }
 
-        public Tensor UpdateGradInput(Tensor input, Tensor target)
+        public NDArray UpdateGradInput(NDArray input, NDArray target)
         {
             var norm = 2.0f / input.ElementCount();
 
